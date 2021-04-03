@@ -9,6 +9,9 @@ DB_NAME:=shocyu
 
 FLYWAY_CONF?=-url=jdbc:mariadb://$(DOCKER_DB_DNS):$(DB_PORT)/$(DB_NAME) -user=$(DB_USER) -password=$(DB_PASSWORD)
 
+all:
+	docker-compose down && docker-compose build && docker-compose up
+
 docker-compose/build:
 	docker-compose build
 

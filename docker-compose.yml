@@ -28,7 +28,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - BACKEND_API_BASE=http://localhost:8888
+      - API_ORIGIN=http://localhost:8888
     volumes:
       - ./frontend:/app
       - notused:/app/node_modules

@@ -9,14 +9,17 @@ import (
 
 type Response struct {
 	Status string `json:"status"`
-	Data string `json:"data"`
+	Message string `json:"data"`
 }
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS")
 		res := Response {
 			Status: "ok",
-			Data: "takurinton",
+			Message: "takurinton",
 		}
 		json, _ := json.Marshal(res)
 		w.Header().Set("Content-Type", "application/json")
@@ -25,7 +28,7 @@ func main() {
 	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		res := Response {
 			Status: "ok",
-			Data: "pong",
+			Message: "pong",
 		}
 		json, _ := json.Marshal(res)
 		w.Header().Set("Content-Type", "application/json")
