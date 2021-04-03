@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: takurinton-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    image: mariadb:10.4
+    ports:
+      - 3306:3306
+    volumes:
+      - data-volume:/var/lib/mysql
+      - ./database/my.cnf:/etc/mysql/conf.d/my.cnf
+
+  migration:
+    image: flyway/flyway
+    depends_on:
+      - db
+    container_name: takurinton-migration
+    volumes:
+      - ./database/migration/schema:/flyway/sql
+
+  frontend:
+    build:
+      context: ./frontend
+    command: npm run dev
+    container_name: takurinton-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - BACKEND_API_BASE=http://localhost:8888
+    volumes:
+      - ./frontend:/app
+      - notused:/app/node_modules
+    working_dir: /app
+    tty: true
+
+  backend:
+    build:
+      context: ./backend
+    command: reflex -r '\.go$$' -s -- sh -c 'go run main.go -port=8888'
+    container_name: takurinton-backend
+    ports:
+      - 8888:8888
+    environment:
+      - BUILD_ENV=Debug
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+
+volumes:
+  notused:
+  data-volume:

@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `test_table`
+(
+    `id`  INT PRIMARY KEY AUTO_INCREMENT,
+    `txt` VARCHAR(1023)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
